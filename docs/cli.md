@@ -2953,16 +2953,16 @@ drawer:
   controls. A question offers `1` and on for its options, the first marked
   `(recommended)`, and `t` to type an answer of your own. A request offers
   `1: Start`, or `1: Retry` once its agent reports it blocked, when it has a
-  start action, and then its outcomes, or `Done`. Up and down move a
-  highlight through a question's options or a request's outcomes, starting
-  on the first, and Enter picks the highlighted one, as its number does.
-  Picking one opens a one-line field under it for an optional note: Enter
+  start action, and then its outcomes, or `Done`. The drawer opens with
+  the focus on the first option, and Enter picks the focused one, as its
+  number does. Picking one opens a one-line field under it for an optional
+  note: Enter
   records your choice, with the note when you typed one, and Esc goes back
   to the options without recording. Every open item offers
   `6: I don't understand`, `7: Discuss`, `8: Dismiss`, and `9: Snooze`,
-  which asks for 15 minutes, 1 hour, 4 hours, or 1 day. A dismissed item
-  offers `8: Restore`. Opening the drawer marks the agent's replies read,
-  as `project inbox read` does.
+  which lists 15 minutes, 1 hour, 4 hours, and 1 day, with the focus on
+  the first. A dismissed item offers `8: Restore`. Opening the drawer marks
+  the agent's replies read, as `project inbox read` does.
 - **A pull request's drawer** shows the session's role, the branch, the size,
   the checks, and the labels, then the unresolved review threads by file.
   `7` starts a discussion about the pull request, `8` asks before it stops
@@ -2974,6 +2974,17 @@ With no drawer open, `7` starts a discussion about the session itself, so you
 can talk to a session that has no item and no pull request. Discuss and `t`
 open a one-line text field at the bottom of the screen.
 
+In a panel, one focus moves through everything you can press. Up and down
+move it through the rows and, directly under the open drawer's row, the
+drawer's options and then its actions, and on past them to the next row.
+The open drawer stays open while the focus moves, so you can look at
+another row first. Enter presses what has the focus: an option, an action
+such as `7: Discuss` or `9: Snooze`, or a row, which opens that row's drawer
+in place of the open one, or closes the drawer when it is the open row
+itself. A drawer without options opens with the focus on its row, so Enter
+twice opens and closes it. The focused row, option, or action is drawn
+reversed, with a `›` before an option or an action.
+
 The note goes to the agent on the same line as your choice, as
 `project inbox answer --note` and `done --note` send it, such as
 `ANSWER 3.a Decline the finding? → Decline it — note: keep the cap`. A note
@@ -2983,15 +2994,15 @@ question open, because the console has no prompt to carry your words.
 
 | Key | Effect |
 | --- | --- |
-| Up and down, or `k` and `j` | Move between rows. In an open question's or request's drawer, they move the highlight through its options instead, and stay put at the first and the last |
-| Enter | On the home list, opens the session's panel. In a panel, opens or closes the drawer of the row under the cursor. In an open question's or request's drawer, picks the highlighted option and opens its note field |
-| Esc or `0` | Closes the drawer, or, with no drawer open, returns to the home list |
-| Left | Returns to the home list from a panel, closing any open drawer |
+| Up and down, or `k` and `j` | On the home list, move between sessions. In a panel, move the focus through the rows and the open drawer's options and actions, and stay put at the first and the last |
+| Enter | On the home list, opens the session's panel. In a panel, presses the focused option or action, closes the open drawer when its row has the focus, or opens the focused row's drawer in place of the open one |
+| An option's or action's own key, such as `2` or `8` | Presses it in the open drawer, as Enter on it does |
+| Left, Esc, or `0` | Closes the open drawer, leaving the focus on its row, or, with no drawer open, returns to the home list |
 | `7` in a panel with no drawer open | Starts a discussion about the session |
 | Page Down or Space, Page Up or `b` | Scrolls a drawer taller than the screen a page down or up |
 | End or `G`, Home or `g` | Scrolls a drawer taller than the screen to its controls, or back to its row |
-| Enter in a text field | Sends the message, or, in a note field, records the option with the note you typed, if any. Esc cancels it, or goes back to the options, and Left and Right move the cursor |
-| `q` | Quits |
+| Enter in a text field | Sends the message, or, in a note field, records the option with the note you typed, if any. Esc or Ctrl-C cancels it, or goes back to the options, and Left and Right move the cursor |
+| Ctrl-C | Quits from the home list. In a panel, the first press shows `Press Ctrl-C again to exit`, and a second within 3 seconds quits |
 
 The console records each choice with the same functions `project inbox`
 runs, for the session on screen: an option is `project inbox answer`, `7` is
@@ -3018,7 +3029,12 @@ watch daemon's cache every 5 seconds, so they cost no GitHub query. An open
 pull request drawer asks GitHub for its threads when it opens and every 30
 seconds while it stays open, at about one point of your hourly GraphQL quota
 each, and asks nothing when the cache counts no unresolved thread. The console
-draws in your terminal's own colors, and draws none when `NO_COLOR` is set.
+draws in the colors of Projector's panel in Claude Code, on your terminal's
+own background: a question in Claude Code's `permission` blue, a request in
+peach, a notice in gray, and each pull request's state as the panel draws
+it. It uses Claude Code's default dark theme, or its light theme when your
+terminal's `COLORFGBG` names a white background. A terminal of 8 colors
+gets the nearest of them, and `NO_COLOR` turns color off.
 
 Without a terminal on standard input and standard output, `project console`
 exits with code 69 and says it needs one. On a Python without the `curses`
